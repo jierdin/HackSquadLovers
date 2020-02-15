@@ -4,6 +4,8 @@ import { Form, Button, Navbar, Nav, Card } from 'react-bootstrap';
 import ProfileHover from 'profile-hover';
 import Box from '3box';
 import ChatBox from '3box-chatbox-react';
+import Web3 from 'web3';
+import HDWalletProvider from "@truffle/hdwallet-provider";
 
 
 export default class App extends Component {
@@ -21,24 +23,40 @@ export default class App extends Component {
       this.setState({ accounts });
     }
   }
+
+
+  async getWeb3(){
+    const mnemonic = "mountains supernatural bird angle hello monster elegant entangle holy crap excellent manure"; // 12 word mnemonic
+    let provider = new HDWalletProvider(mnemonic, "http://localhost:8545");
+    // HDWalletProvider is compatible with Web3. Use it at Web3 constructor, just like any other Web3 Provider
+    const web3 = new Web3(provider);
+    const accounts = web3.defaultAccount;
+    this.setState({  accounts, web3 });
+  }
+
+
   async auth3box() {
     const address = this.state.accounts[0];
     const spaces = ['3Book'];
+    // const box = await Box.create(this.state.web3);
     const box = await Box.create(window.ethereum);
     await box.auth(spaces, { address });
     await box.syncDone;
     this.setState({ box });
   }
 
+
+
   async componentDidMount() {
     await this.getAddressFromMetaMask();
+    // await this.getWeb3();
     if (this.state.accounts) {
       // Now MetaMask's provider has been enabled, we can start working with 3Box
       await this.auth3box();
 
       const space = await this.state.box.openSpace('3Book');
       await space.syncDone;
-      console.log("jhello1");
+      console.log("hello!");
       this.setState({space});
 
     }
@@ -56,19 +74,36 @@ export default class App extends Component {
             {this.state.accounts && (
               <Nav fill style={{ width: "100%" }} >
                 <Nav.Item><Link to="/">Home</Link></Nav.Item>
-                <Nav.Item><Link to="/profile">Profile Update</Link></Nav.Item>
+                <Nav.Item><Link to="/credentials">Credentials</Link></Nav.Item>
                 <Nav.Item><Link to="/notes">Notes</Link></Nav.Item>
+                <Nav.Item><Link to="/chat">Chat</Link></Nav.Item>
               </Nav>
             )}
 
           </Navbar>
           <div className="container" style={{ paddingTop: '50px' }}>
-            <h1>🦄3Book</h1>
-            <p>A simple social site</p>
             {this.state.needToAWeb3Browser && <h2>Please install metamask🦊</h2>}
             {(!this.state.needToAWeb3Browser && !this.state.accounts) && <h2>Connect MetaMask🤝</h2>}
+
             {this.state.accounts && (
               <Switch>
+                <Route path="/chat">
+                  <Chat/>
+                  {this.state.box && <ChatBox
+                      spaceName="3Book"
+                      threadName="3BookThread"
+                      box={this.state.box}
+                      currentUserAddr={this.state.accounts[0]}
+                  />}
+                </Route>
+                <Route path="/credentials">
+                  <Credentials/>
+                  <ProfileHover address={this.props.ethAddress} showName={true} />
+                  <ProfileHover address={"0x47564E3B0066Ce4e9479FAF3e82b5c1Dd0BACe77"} showName={true} />
+                  <ProfileHover address={"0x05eD7801b2a79A26c8E34E5A2C991D6Bcd888Dc1"} showName={true} />
+                  <ProfileHover address={"0x05eD7801b2a79A26c8E34E5A2C991D6Bcd888Dc2"} showName={true} />
+                  <ProfileHover address={"0x05eD7801b2a79A26c8E34E5A2C991D6Bcd887Cd2"} showName={true} />
+                </Route>
                 <Route path="/profile">
                   <Profile
                     ethAddress={this.state.accounts[0]}
@@ -83,14 +118,10 @@ export default class App extends Component {
                   />
                 </Route>
 
+
               </Switch>
             )}
-            {this.state.box && <ChatBox
-                spaceName="3Book"
-                threadName="3BookThread"
-                box={this.state.box}
-                currentUserAddr={this.state.accounts[0]}
-            />}
+
           </div>
         </div>
       </Router>
@@ -102,8 +133,15 @@ export default class App extends Component {
 class Home extends Component {
   render() {
     return (<>
-      <h1>Home</h1>
+      <h1>Sovereign ID</h1>
       <ProfileHover address={this.props.ethAddress} showName={true} />
+    </>);
+  }
+}
+class Credentials extends Component {
+  render() {
+    return (<>
+      <h1>Credentials</h1>
     </>);
   }
 }
@@ -115,6 +153,16 @@ class Profile extends Component {
     </>);
   }
 }
+
+class Chat extends Component {
+  render() {
+    return (<>
+      <h1>Chat</h1>
+        {console.log("chat time!")}
+    </>);
+  }
+}
+
 
 
 class Notes extends Component {
