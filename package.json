@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "3box": "^1.16.1",
+    "3box": "^1.17.0",
+    "3box-chatbox-react": "^0.1.6",
     "multicodec": "^0.5.6",
     "profile-hover": "^1.1.1",
     "react": "^16.11.0",

@@ -2,7 +2,9 @@ import React, { Component } from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { Form, Button, Navbar, Nav, Card } from 'react-bootstrap';
 import ProfileHover from 'profile-hover';
-import Box from '3box'; 
+import Box from '3box';
+import ChatBox from '3box-chatbox-react';
+
 
 export default class App extends Component {
 
@@ -36,7 +38,9 @@ export default class App extends Component {
 
       const space = await this.state.box.openSpace('3Book');
       await space.syncDone;
-			this.setState({space});
+      console.log("jhello1");
+      this.setState({space});
+
     }
   }
   render() {
@@ -78,8 +82,15 @@ export default class App extends Component {
                     ethAddress={this.state.accounts[0]}
                   />
                 </Route>
+
               </Switch>
             )}
+            {this.state.box && <ChatBox
+                spaceName="3Book"
+                threadName="3BookThread"
+                box={this.state.box}
+                currentUserAddr={this.state.accounts[0]}
+            />}
           </div>
         </div>
       </Router>
@@ -198,7 +209,7 @@ class Notes extends Component {
 class FormComponent extends Component {
 
 
-  
+
   render() {
     return (
       <Form onSubmit={this.props.handleSubmit}>
