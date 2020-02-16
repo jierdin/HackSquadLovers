@@ -8,7 +8,6 @@ import HDWalletProvider from "@truffle/hdwallet-provider";
 import ChatBox from "./ChatBoxExtended";
 import colorado from "../src/assets/Screen Shot 2020-02-15 at 7.28.07 PM.png"
 import CredentialCard from "./components/CredentialCard"
-import qr from "./QRCode";
 
 
 export default class App extends Component {
@@ -101,17 +100,16 @@ export default class App extends Component {
                 </Route>
                 <Route path="/credentials">
                   <Credentials/>
-                  {/*These addresses would come from an HD wallet*/}
-                  <ProfileHover address={this.props.ethAddress} showName={true} />
+                  {/*TODO: each address would be completely unique - sourced from a seed phrase like an HD wallet*/}
                   <Container>
                     <Row>
-                      <CredentialCard name={"Drivers License"} address={"0x47564E3B0066Ce4e9479FAF3e82b5c1Dd0BACe77"} >
+                      <CredentialCard name={"Drivers License"} address={this.state.accounts[0]} >
                       </CredentialCard>
-                      <CredentialCard name={"Cosmetology"} address={"0x05eD7801b2a79A26c8E34E5A2C991D6Bcd888Dc1"} >
+                      <CredentialCard name={"Cosmetology"} address={this.state.accounts[0]} >
                       </CredentialCard>
-                      <CredentialCard name={"Medical Marijuana"} address={"0x05eD7801b2a79A26c8E34E5A2C991D6Bcd888Dc2"} >
+                      <CredentialCard name={"Medical Marijuana"} address={this.state.accounts[0]} >
                       </CredentialCard>
-                      <CredentialCard name={"License to Kill"} address={"0x05eD7801b2a79A26c8E34E5A2C991D6Bcd887Cd2"} >
+                      <CredentialCard name={"License to Kill"} address={this.state.accounts[0]} >
                       </CredentialCard>
                     </Row>
                 </Container>
