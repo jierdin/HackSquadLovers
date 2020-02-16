@@ -1,12 +1,14 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import { Form, Button, Navbar, Nav, Card } from 'react-bootstrap';
+import { Form, Button, Navbar, Nav, Container, Row, Card } from 'react-bootstrap';
 import ProfileHover from 'profile-hover';
 import Box from '3box';
 import Web3 from 'web3';
 import HDWalletProvider from "@truffle/hdwallet-provider";
 import ChatBox from "./ChatBoxExtended";
 import colorado from "../src/assets/Screen Shot 2020-02-15 at 7.28.07 PM.png"
+import CredentialCard from "./components/CredentialCard"
+import qr from "./QRCode";
 
 
 export default class App extends Component {
@@ -101,10 +103,18 @@ export default class App extends Component {
                   <Credentials/>
                   {/*These addresses would come from an HD wallet*/}
                   <ProfileHover address={this.props.ethAddress} showName={true} />
-                  <ProfileHover address={"0x47564E3B0066Ce4e9479FAF3e82b5c1Dd0BACe77"} showName={true} />
-                  <ProfileHover address={"0x05eD7801b2a79A26c8E34E5A2C991D6Bcd888Dc1"} showName={true} />
-                  <ProfileHover address={"0x05eD7801b2a79A26c8E34E5A2C991D6Bcd888Dc2"} showName={true} />
-                  <ProfileHover address={"0x05eD7801b2a79A26c8E34E5A2C991D6Bcd887Cd2"} showName={true} />
+                  <Container>
+                    <Row>
+                      <CredentialCard name={"Drivers License"} address={"0x47564E3B0066Ce4e9479FAF3e82b5c1Dd0BACe77"} >
+                      </CredentialCard>
+                      <CredentialCard name={"Cosmetology"} address={"0x05eD7801b2a79A26c8E34E5A2C991D6Bcd888Dc1"} >
+                      </CredentialCard>
+                      <CredentialCard name={"Medical Marijuana"} address={"0x05eD7801b2a79A26c8E34E5A2C991D6Bcd888Dc2"} >
+                      </CredentialCard>
+                      <CredentialCard name={"License to Kill"} address={"0x05eD7801b2a79A26c8E34E5A2C991D6Bcd887Cd2"} >
+                      </CredentialCard>
+                    </Row>
+                </Container>
                 </Route>
                 <Route path="/profile">
                   <Profile
