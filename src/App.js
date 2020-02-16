@@ -3,9 +3,10 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { Form, Button, Navbar, Nav, Card } from 'react-bootstrap';
 import ProfileHover from 'profile-hover';
 import Box from '3box';
-import ChatBox from '3box-chatbox-react';
+// import ChatBox from '3box-chatbox-react';
 import Web3 from 'web3';
 import HDWalletProvider from "@truffle/hdwallet-provider";
+import ChatBox from "./ChatBoxExtended";
 
 
 export default class App extends Component {
