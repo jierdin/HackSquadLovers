@@ -9,7 +9,7 @@ const TextMessage = ({ isMyComment, colorTheme, messageObj, onClickHash, onClick
     style={{ backgroundColor: isMyComment ? colorTheme : '#ececec'}}
   >
     <Button size={"sm"} style={{marginRight:"10px"}} onClick={onClickHash}> hash </Button>
-    <Button size={"sm"} style={{marginRight:"10px", marginLeft:"5px"}} onClick={onClickPersist}> persist </Button>
+    <Button size={"sm"} style={{marginRight:"10px", marginLeft:"5px"}} onClick={onClickPersist}> publish </Button>
 
     <Linkify properties={{ target: '_blank' }}>
       {messageObj.message}

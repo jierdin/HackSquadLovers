@@ -3,10 +3,10 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { Form, Button, Navbar, Nav, Card } from 'react-bootstrap';
 import ProfileHover from 'profile-hover';
 import Box from '3box';
-// import ChatBox from '3box-chatbox-react';
 import Web3 from 'web3';
 import HDWalletProvider from "@truffle/hdwallet-provider";
 import ChatBox from "./ChatBoxExtended";
+import colorado from "../src/assets/Screen Shot 2020-02-15 at 7.28.07 PM.png"
 
 
 export default class App extends Component {
@@ -99,6 +99,7 @@ export default class App extends Component {
                 </Route>
                 <Route path="/credentials">
                   <Credentials/>
+                  {/*These addresses would come from an HD wallet*/}
                   <ProfileHover address={this.props.ethAddress} showName={true} />
                   <ProfileHover address={"0x47564E3B0066Ce4e9479FAF3e82b5c1Dd0BACe77"} showName={true} />
                   <ProfileHover address={"0x05eD7801b2a79A26c8E34E5A2C991D6Bcd888Dc1"} showName={true} />
@@ -134,7 +135,8 @@ export default class App extends Component {
 class Home extends Component {
   render() {
     return (<>
-      <h1>Sovereign ID</h1>
+      <img src={colorado} alt={"colorado"}/>
+      <h1>Colorado Self Sovereign ID</h1>
       <ProfileHover address={this.props.ethAddress} showName={true} />
     </>);
   }
@@ -158,7 +160,7 @@ class Profile extends Component {
 class Chat extends Component {
   render() {
     return (<>
-      <h1>Chat</h1>
+      <h1>Amnesia Chat</h1>
         {console.log("chat time!")}
     </>);
   }

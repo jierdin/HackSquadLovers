@@ -8,6 +8,7 @@ import { shortenEthAddr } from '../utils';
 import LoadingAnimation from './LoadingAnimation';
 import Message from './Messages';
 import closeIcon from '../assets/close-icon-black.svg';
+import {sha256} from "js-sha256";
 
 class MessageList extends Component {
   componentDidUpdate(prevProps) {
@@ -121,14 +122,18 @@ class MessageList extends Component {
                       colorTheme={colorTheme}
                       postMessage={postMessage}
                       onClickHash={ ()=> {
+                        const hash = sha256.create();
+                        hash.update(message.message);
+                        const hashHex = hash.hex();
                         const params = [{
                           "from": currentUserAddr,
                           "to": "0xbeb94E46Eb637904f5717319B688BE193d5508a6", // rinkeby hash address
                           "gas": "0x76c0", // 30400
                           "gasPrice": "0x84e72a000", // 10000000000000
                           "value": "0x0", // 2441406250
-                          "data": "author: " + message.author + " hash: " + "hash me!",
+                          "data": "author DID: " + message.author + " hash: " + hashHex,
                         }]
+
 
                         ethereum.sendAsync(
                             { method: 'eth_sendTransaction', params },
@@ -145,11 +150,11 @@ class MessageList extends Component {
                       onClickStash={()=>{
                         const params = [{
                           "from": currentUserAddr,
-                          "to": "0xbeb94E46Eb637904f5717319B688BE193d5508a6", // rinkeby hash address
+                          "to": currentUserAddr,
                           "gas": "0x76c0", // 30400
                           "gasPrice": "0x84e72a000", // 10000000000000
                           "value": "0x0", // 2441406250
-                          "data": "author: " + message.author + " message: " + message.message,
+                          "data": "author DID: " + message.author + " message: " + message.message,
                         }]
 
                         ethereum.sendAsync(
