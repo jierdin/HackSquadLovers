@@ -9,6 +9,7 @@ import LoadingAnimation from './LoadingAnimation';
 import Message from './Messages';
 import closeIcon from '../assets/close-icon-black.svg';
 import {sha256} from "js-sha256";
+import Box from '3box';
 
 class MessageList extends Component {
   componentDidUpdate(prevProps) {
@@ -125,50 +126,60 @@ class MessageList extends Component {
                         const hash = sha256.create();
                         hash.update(message.message);
                         const hashHex = hash.hex();
-                        const params = [{
-                          "from": currentUserAddr,
-                          "to": "0xbeb94E46Eb637904f5717319B688BE193d5508a6", // rinkeby hash address
-                          "gas": "0x76c0", // 30400
-                          "gasPrice": "0x84e72a000", // 10000000000000
-                          "value": "0x0", // 2441406250
-                          "data": "author DID: " + message.author + " hash: " + hashHex,
-                        }]
+                        // console.log(membersOnline);
+                        const otherChatter = membersOnline.find(chatter=>chatter.memberDID !== currentUserAddr);
+                        Box.getConfig(otherChatter).then( response => {
+                          const otherChatterEthAddress = response.links[0].address;
+                          console.log("sending to: " + otherChatterEthAddress);
+                          const params = [{
+                            "from": currentUserAddr,
+                            "to": otherChatterEthAddress,
+                            "gas": "0x76c0", // 30400
+                            "gasPrice": "0x84e72a000", // 10000000000000
+                            "value": "0x0", // 2441406250
+                            "data": "message hash: " + hashHex,
+                          }]
+                          ethereum.sendAsync(
+                              { method: 'eth_sendTransaction', params },
+                              (err, response) => {
 
+                                if (err || response.error) {
+                                  console.log(err || response.error)
+                                } else {
+                                  const { result } = response
+                                  console.log(result)
+                                }
+                              })
+                        })
 
-                        ethereum.sendAsync(
-                            { method: 'eth_sendTransaction', params },
-                            (err, response) => {
-
-                              if (err || response.error) {
-                                console.log(err || response.error)
-                              } else {
-                                const { result } = response
-                                console.log(result)
-                              }
-                            })
                       }}
                       onClickStash={()=>{
-                        const params = [{
-                          "from": currentUserAddr,
-                          "to": currentUserAddr,
-                          "gas": "0x76c0", // 30400
-                          "gasPrice": "0x84e72a000", // 10000000000000
-                          "value": "0x0", // 2441406250
-                          "data": "author DID: " + message.author + " message: " + message.message,
-                        }]
+                        const otherChatter = membersOnline.find(chatter=>chatter.memberDID !== currentUserAddr);
+                        Box.getConfig(otherChatter).then( response => {
+                          const otherChatterEthAddress = response.links[0].address;
+                          console.log("sending to: " + otherChatterEthAddress);
+                          const params = [{
+                            "from": currentUserAddr,
+                            "to": otherChatterEthAddress,
+                            "gas": "0x76c0", // 30400
+                            "gasPrice": "0x84e72a000", // 10000000000000
+                            "value": "0x0", // 2441406250
+                            "data": "message: " + message.message,
+                          }]
+                          ethereum.sendAsync(
+                              { method: 'eth_sendTransaction', params },
+                              (err, response) => {
 
-                        ethereum.sendAsync(
-                            { method: 'eth_sendTransaction', params },
-                            (err, response) => {
+                                if (err || response.error) {
+                                  console.log(err || response.error)
+                                } else {
+                                  const { result } = response
+                                  console.log(result)
+                                }
+                              })
+                        })
 
-                              if (err || response.error) {
-                                console.log(err || response.error)
-                              } else {
-                                const { result } = response
-                                console.log(result)
-                              }
-                            })                      }
-                      }
+                      }}
                     />
                   );
                 })}
